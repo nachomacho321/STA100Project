@@ -1,0 +1,16 @@
+---
+title: "STA100_Project"
+author: "Gurshan"
+date: "3/4/2022"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+getwd()
+```
+
+
