@@ -16,9 +16,10 @@ n = dim(mydata)[1]
 # X3= CVAC Level of concern
 
 Y=mydata[,8]
-head(mydata)
+
 X11=mydata[,2]
 lmHesitant= lm(formula = Y~X11, data=mydata)
+#abline(lmHesitant) <- will add regression line onto plot
 X12=mydata[,3]
 lmStronglyHesitant= lm(formula = Y~X12, data=mydata)
 X2=mydata[,4]
