@@ -37,7 +37,7 @@ abline(lmSVI)
 X3=mydata[,6]
 lmCVAC=lm(formula = Y~X3, data=mydata)
 summary(lmCVAC)
-plot(X3, Y, main = " CVAC level of concern for vaccination rollout v. Percent of Adults Fully Vaccinated",
+plot(X3, Y, main = " Vaccine Rollout Concern v. Percent of Adults Fully Vaccinated",
      xlab = "CVAC level of concern", ylab = "Percent Vaccinated",
      pch = 19, frame = FALSE)
 abline(lmCVAC)
