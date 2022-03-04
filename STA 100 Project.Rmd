@@ -5,15 +5,10 @@ date: "3/4/2022"
 output: word_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+```{r}
+mydata = read.table("Vaccine_Hesitancy_for_COVID-19__County_and_local_estimates.csv", header=T, sep="\t")
+n = dim(mydata)[1]
 
-```{r}
-getwd()
-```
-```{r}
-1+1
 ```
 
 
