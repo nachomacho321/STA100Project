@@ -10,22 +10,37 @@ mydata <- read.table("Vaccine_Hesitancy_for_COVID-19__County_and_local_estimates
 n = dim(mydata)[1]
 
 # Y= Percent of adults fully vaccinated against Covid-19
-# X11= Estimated Hesitant
-# X12= Estimated Strongly Hesitant
+# X1= Estimated Strongly Hesitant
 # X2= Social Vulnerability Index
 # X3= CVAC Level of concern
 
 Y=mydata[,8]
+X1=mydata[,3]
 
-X11=mydata[,2]
-lmHesitant= lm(formula = Y~X11, data=mydata)
-#abline(lmHesitant) <- will add regression line onto plot
-X12=mydata[,3]
-lmStronglyHesitant= lm(formula = Y~X12, data=mydata)
+lmStronglyHesitant= lm(formula = Y~X1, data=mydata)
+summary(lmStronglyHesitant)
+
+plot(X1, Y, main = "Estimated Strongly Hesitant v. Percent of Adults Fully Vaccinated",
+     xlab = "Estimated Strongly Hesitant", ylab = "Percent Vaccinated",
+     pch = 19, frame = FALSE)
+abline(lmStronglyHesitant)
+
 X2=mydata[,4]
 lmSVI=lm(formula = Y~X2, data=mydata)
+summary(lmSVI)
+
+plot(X2, Y, main = "Social Vulnerability Index v. Percent of Adults Fully Vaccinated",
+     xlab = "SVI", ylab = "Percent Vaccinated",
+     pch = 19, frame = FALSE)
+abline(lmSVI)
+
 X3=mydata[,6]
 lmCVAC=lm(formula = Y~X3, data=mydata)
+summary(lmCVAC)
+plot(X3, Y, main = " CVAC level of concern for vaccination rollout v. Percent of Adults Fully Vaccinated",
+     xlab = "CVAC level of concern", ylab = "Percent Vaccinated",
+     pch = 19, frame = FALSE)
+abline(lmCVAC)
 
 ```
 
