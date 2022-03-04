@@ -6,8 +6,25 @@ output: word_document
 ---
 
 ```{r}
-mydata = read.table("Vaccine_Hesitancy_for_COVID-19__County_and_local_estimates.csv", header=T, sep="\t")
+mydata <- read.table("Vaccine_Hesitancy_for_COVID-19__County_and_local_estimates.txt", header=T, sep="\t")
 n = dim(mydata)[1]
+
+# Y= Percent of adults fully vaccinated against Covid-19
+# X11= Estimated Hesitant
+# X12= Estimated Strongly Hesitant
+# X2= Social Vulnerability Index
+# X3= CVAC Level of concern
+
+Y=mydata[,8]
+head(mydata)
+X11=mydata[,2]
+lmHesitant= lm(formula = Y~X11, data=mydata)
+X12=mydata[,3]
+lmStronglyHesitant= lm(formula = Y~X12, data=mydata)
+X2=mydata[,4]
+lmSVI=lm(formula = Y~X2, data=mydata)
+X3=mydata[,6]
+lmCVAC=lm(formula = Y~X3, data=mydata)
 
 ```
 
