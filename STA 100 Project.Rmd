@@ -2,8 +2,13 @@
 title: "STA100_Project"
 author: "Gurshan"
 date: "3/4/2022"
-output: word_document
+output:
+  html_document:
+    df_print: paged
 ---
+
+
+
 
 ```{r}
 mydata <- read.table("Vaccine_Hesitancy_for_COVID-19__County_and_local_estimates.txt", header=T, sep="\t")

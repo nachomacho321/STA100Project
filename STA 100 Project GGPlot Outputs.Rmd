@@ -1,0 +1,29 @@
+---
+title: "STA 100 Project GGPlot Outputs"
+author: "Gurshan"
+date: "3/4/2022"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+vaccine_rates <- readr::read_csv("CountyData.csv")
+vaccine_rates_tidy <- rename(vaccine_rates, county = "County Name", est_hesitant = "Estimated hesitant", est_strong_hesitant = "Estimated strongly hesitant", svi= "Social Vulnerability Index (SVI)", svi_cat = "SVI Category", cvac_level_rates = "CVAC level of concern for vaccination rollout", cvac_level = "CVAC Level Of Concern", percent_vac = "Percent adults fully vaccinated against COVID-19 (as of 6/10/21)")
+```
+
+```{r}
+vaccine_rates_tidy%>%
+  ggplot(aes(x=est_strong_hesitant, y=percent_vac))+
+  geom_point()+
+  geom_smooth(method=lm, se=F)
+
+ggplot(data=vaccine_rates_tidy, mapping=aes(x=est_strong_hesitant, y=svi))+geom_point(na.rm=T)
+
+ggplot(data=vaccine_rates_tidy, mapping=aes(x=est_strong_hesitant, y=cvac_level_rates))+geom_point(na.rm=T)
+```
+
