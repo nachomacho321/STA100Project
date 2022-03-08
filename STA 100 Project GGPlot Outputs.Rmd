@@ -4,11 +4,15 @@ author: "Gurshan"
 date: "3/4/2022"
 output: html_document
 ---
+```{r}
+#install.packages("ggpubr")
+```
 
 ```{r}
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(ggpubr)
 ```
 
 ```{r}
@@ -20,10 +24,22 @@ vaccine_rates_tidy <- rename(vaccine_rates, county = "County Name", est_hesitant
 vaccine_rates_tidy%>%
   ggplot(aes(x=est_strong_hesitant, y=percent_vac))+
   geom_point()+
-  geom_smooth(method=lm, se=F)
+  geom_smooth(aes(x=est_strong_hesitant, y=percent_vac, color = "Estimated Strongly Hesitant"),method=lm, se=F)+
+  stat_regline_equation(label.y = 1.1, aes(label = ..eq.label..)) +
+  stat_regline_equation(label.y = 1, aes(label = ..rr.label..))+
+  t.test()+
+  #geom_point(aes(x=svi, y=percent_vac, color = "SVI"))+
+  #geom_smooth(aes(x=svi, y=percent_vac, color = "SVI"),method=lm, se=F)+
+  #geom_point(aes(x=cvac_level_rates, y=percent_vac, color = "CVAC"))+
+  #geom_smooth(aes(x=cvac_level_rates, y=percent_vac, color = "CVAC"),method=lm, se=F)+
+  labs(title="Percent Adults Fully Vaccinated vs. Independent Variables",
+       x="Independent Variable",
+       y="Percent Adults Fully Vaccinated")+
+  theme(plot.title = element_text(size = 12, face = "bold"),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 10))+
+  theme(plot.title = element_text(size = rel(1.25), hjust = 0.5))
 
-ggplot(data=vaccine_rates_tidy, mapping=aes(x=est_strong_hesitant, y=svi))+geom_point(na.rm=T)
 
-ggplot(data=vaccine_rates_tidy, mapping=aes(x=est_strong_hesitant, y=cvac_level_rates))+geom_point(na.rm=T)
 ```
 
