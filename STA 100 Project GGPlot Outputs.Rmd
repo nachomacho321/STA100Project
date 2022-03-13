@@ -1,0 +1,130 @@
+---
+title: "STA 100 Project GGPlot Outputs"
+author: "Gurshan"
+date: "3/4/2022"
+output: html_document
+---
+```{r}
+#install.packages("ggpubr")
+```
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(ggthemes)
+```
+
+```{r}
+vaccine_rates <- readr::read_csv("CountyData.csv")
+vaccine_rates_tidy <- rename(vaccine_rates, county = "County Name", est_hesitant = "Estimated hesitant", est_strong_hesitant = "Estimated strongly hesitant", svi= "Social Vulnerability Index (SVI)", svi_cat = "SVI Category", cvac_level_rates = "CVAC level of concern for vaccination rollout", cvac_level = "CVAC Level Of Concern", percent_vac = "Percent adults fully vaccinated against COVID-19 (as of 6/10/21)")
+```
+```{r}
+regression <- lm(percent_vac~est_strong_hesitant+cvac_level_rates+svi, data = vaccine_rates_tidy)
+summary(regression)
+
+```
+```{r}
+#pval <- substr(paste("p =", summary(regression)$coefficients[1, 4]), 1, 10)
+#r_squared <- substr(paste("R\u00B2 =", summary(regression$adj.r.squared), 1, 10))
+
+#ggplot(vaccine_rates_tidy, aes (x = percent_vac)) +
+ # geom_point(y= est_strong_hesitant, size = 3) +
+  #geom_point(y=svi, size=3)+
+  #geom_point(y=cvac_level_rates, size=3)+
+  #ylab ("Independent") +
+  #geom_smooth(method = 'lm', color = "blue") + 
+  #xlab ("BDE-153 (ng/g ww)") +
+  #geom_text(aes(label = pval, x = 2500, y = 0.4), size = 5, col = "black") +
+  #geom_text(aes(label = r_squared, x = 2500, y = 0.38), size = 5, col = "black") #+
+ # theme_classic() 
+```
+
+
+```{r}
+vaccine_rates_tidy%>%
+  ggplot(aes(x=est_strong_hesitant, y=percent_vac))+
+  geom_point()+
+  geom_smooth(aes(x=est_strong_hesitant, y=percent_vac, color = "Estimated Strongly Hesitant"),method=lm, se=F)+
+  stat_regline_equation(label.y = 1.05, aes(label = ..eq.label..)) +
+  stat_regline_equation(label.y = 1, aes(label = ..rr.label..))+
+  theme_tufte()+
+   theme(legend.position ="none")+
+  scale_x_continuous(breaks = c(0.020,0.025,0.030,0.035,0.040,0.045))+
+  labs(title="Estimated Strongly Hesitant v. Percent of Adults Fully Vaccinated",
+       x="Estimated Strongly Hesitant",
+       y="Percent Vaccinated")+
+  theme(plot.title = element_text(size = 12, face = "bold"),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 10))+
+  theme(plot.title = element_text(size = rel(1.25), hjust = 0.5))
+  #t.test()+
+  #geom_point(aes(x=svi, y=percent_vac, color = "SVI"))+
+  #geom_smooth(aes(x=svi, y=percent_vac, color = "SVI"),method=lm, se=F)+
+  #geom_point(aes(x=cvac_level_rates, y=percent_vac, color = "CVAC"))+
+  #geom_smooth(aes(x=cvac_level_rates, y=percent_vac, color = "CVAC"),method=lm, se=F)+
+  #labs(title="Percent Adults Fully Vaccinated vs. Independent Variables",
+   #    x="Independent Variable",
+    #   y="Percent Adults Fully Vaccinated")+
+  #theme(plot.title = element_text(size = 12, face = "bold"),
+   #     axis.text = element_text(size = 10),
+    #    axis.title = element_text(size = 10))+
+  #theme(plot.title = element_text(size = rel(1.25), hjust = 0.5))
+
+vaccine_rates_tidy%>%
+  ggplot(aes(x=svi, y=percent_vac))+
+  geom_point()+
+  geom_smooth(aes(x=svi, y=percent_vac, color = "Estimated Strongly Hesitant"),method=lm, se=F)+
+  stat_regline_equation(label.y = 1.05, aes(label = ..eq.label..)) +
+  stat_regline_equation(label.y = 1, aes(label = ..rr.label..))+
+  theme_tufte()+
+   theme(legend.position ="none")+
+  scale_x_continuous(breaks = c(0.2,0.4,0.6,0.8,1.0))+
+  labs(title="Social Vulnerability Index v. Percent of Adults Fully Vaccinated",
+       x="SVI",
+       y="Percent Vaccinated")+
+  theme(plot.title = element_text(size = 12, face = "bold"),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 10))+
+  theme(plot.title = element_text(size = rel(1.25), hjust = 0.5))
+
+vaccine_rates_tidy%>%
+  ggplot(aes(x=cvac_level_rates, y=percent_vac))+
+  geom_point()+
+  geom_smooth(aes(x=cvac_level_rates, y=percent_vac, color = "Estimated Strongly Hesitant"),method=lm, se=F)+
+  stat_regline_equation(label.y = 1.05, aes(label = ..eq.label..)) +
+  stat_regline_equation(label.y = 1, aes(label = ..rr.label..))+
+  theme_tufte()+
+   theme(legend.position ="none")+
+  scale_x_continuous(breaks = c(0.3,0.4,0.5,0.6,0.7,0.8,0.9))+
+  labs(title="Vaccine Rollout Concern v. Percent of Adults Fully Vaccinated",
+       x="CVAC Level of Concern",
+       y="Percent Vaccinated")+
+  theme(plot.title = element_text(size = 12, face = "bold"),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 10))+
+  theme(plot.title = element_text(size = rel(1.25), hjust = 0.5))
+```
+
+```{r}
+vaccine_rates_tidy %>% 
+  ggplot(aes(y=percent_vac, x= svi))+
+  geom_boxplot()
+
+vaccine_rates_tidy %>% 
+  ggplot(aes(y=percent_vac, x=cvac_level_rates))+
+  geom_boxplot()
+
+vaccine_rates_tidy %>% 
+  ggplot(aes(y=percent_vac, x=est_strong_hesitant))+
+  geom_boxplot()
+```
+```{r}
+vaccine_rates_tidy %>% 
+  ggplot(aes(x= svi))+
+  geom_histogram()
+```
+
+
+
